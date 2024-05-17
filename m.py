@@ -285,8 +285,8 @@ def show_help(message):
 🤖 To See Admin Commands:
 💥 /admincmd : Shows All Admin Commands.
 
-Buy From :- @kushwaha_307,@DivinexAv
-Official Channel :- t.me/RX100OFFIiCIAL
+Buy From :- @cas_akki,@cobra_anil
+Official Channel :- t.me/CARDING_ZONE_ROCK
 '''
     for handler in bot.message_handlers:
         if hasattr(handler, 'commands'):
@@ -303,7 +303,7 @@ def welcome_start(message):
     user_name = message.from_user.first_name
     response = f'''👋🏻Welcome to Your Home, {user_name}! Feel Free to Explore.
 🤖Try To Run This Command : /help 
-✅Join :- t.me/RX100OFFIiCIAL'''
+✅Join :- t.me/CARDING_ZONE_ROCK'''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['rules'])
