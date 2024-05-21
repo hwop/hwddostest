@@ -285,8 +285,8 @@ def show_help(message):
 🤖 To See Admin Commands:
 💥 /admincmd : Shows All Admin Commands.
 
-Buy From :- @cas_akki,@cobra_anil
-Official Channel :- t.me/CARDING_ZONE_ROCK
+Buy From :- @GoTo_HellxD
+Official Channel :- t.me/HackerWorldMods
 '''
     for handler in bot.message_handlers:
         if hasattr(handler, 'commands'):
@@ -303,7 +303,7 @@ def welcome_start(message):
     user_name = message.from_user.first_name
     response = f'''👋🏻Welcome to Your Home, {user_name}! Feel Free to Explore.
 🤖Try To Run This Command : /help 
-✅Join :- t.me/CARDING_ZONE_ROCK'''
+✅Join :- t.me/HackerWorldMods'''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['rules'])
@@ -327,9 +327,9 @@ Vip 🌟 :
 -> Concurrents Attack : 3
 
 Pr-ice List💸 :
-Day-->300 Rs
-Week-->1000 Rs
-Month-->2000 Rs
+Day-->200 Rs
+Week-->800 Rs
+Month-->1500 Rs
 '''
     bot.reply_to(message, response)
 
@@ -366,7 +366,7 @@ def broadcast_message(message):
         else:
             response = "🤖 Please Provide A Message To Broadcast."
     else:
-        response = "Only Admin Can Run This Command 😡."
+        response = "Only Admin Can Run This Command ."
 
     bot.reply_to(message, response)
 
