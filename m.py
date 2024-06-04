@@ -9,7 +9,7 @@ import threading
 from flask import Flask
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('YOUR_TELEGRAM_BOT_TOKEN')
+bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
 
 # Admin user IDs
 admin_id = ["5575457497"]
