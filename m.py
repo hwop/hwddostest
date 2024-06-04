@@ -5,9 +5,11 @@ import subprocess
 import requests
 import datetime
 import os
+import threading
+from flask import Flask
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
+bot = telebot.TeleBot('YOUR_TELEGRAM_BOT_TOKEN')
 
 # Admin user IDs
 admin_id = ["5575457497"]
@@ -223,8 +225,8 @@ def handle_bgmi(message):
         # Check if the user is in admin_id (admins have no cooldown)
         if user_id not in admin_id:
             # Check if the user has run the command before and is still within the cooldown period
-            if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < 300:
-                response = "You Are On Cooldown ❌. Please Wait 5min Before Running The /bgmi Command Again."
+            if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < 120:
+                response = "You Are On Cooldown ❌. Please Wait 2 min Before Running The /bgmi Command Again."
                 bot.reply_to(message, response)
                 return
             # Update the last time the user ran the command
@@ -286,7 +288,7 @@ def show_help(message):
 💥 /admincmd : Shows All Admin Commands.
 
 Buy From :- @GoTo_HellxD
-Official Channel :- t.me/HackerWorldMods
+Official Channel :- @HackerWorldMods
 '''
     for handler in bot.message_handlers:
         if hasattr(handler, 'commands'):
@@ -374,3 +376,4 @@ def broadcast_message(message):
 
 
 bot.polling()
+    
