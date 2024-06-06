@@ -324,11 +324,8 @@ def handle_hwop(message):
                     response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
             else:
                 response = "✅ Usage :- /hwop <target> <port> <time>"
-        else:
-            response = "Command time is changed join @HackerWorldMods for updates."
     else:
-        response = "The free command is off now. Join @HackerWorldMods for more updates."
-
+        response = "Command time is changed join @HackerWorldMods for updates."
     bot.reply_to(message, response)
 
     
