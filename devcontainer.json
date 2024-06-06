@@ -1,0 +1,11 @@
+{
+  "name": "My Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": ["--init"],
+  "settings": {},
+  "extensions": [],
+  "postCreateCommand": "keep_alive.sh",
+  "remoteUser": "vscode"
+}
