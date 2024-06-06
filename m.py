@@ -299,7 +299,7 @@ def parse_time_range(time_range_str):
 def handle_hwop(message):
     user_id = str(message.chat.id)
     if user_id in allowed_user_ids:
-        if not get_hwop_status():
+        if not fetch_on_off_value():
             response = "The free command is off now. Check @HackerWorldMods for more updates."
         else:
             if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
