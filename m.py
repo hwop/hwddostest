@@ -9,9 +9,6 @@ import threading
 from flask import Flask
 import os
 
-# Open a port for Render to detect
-os.system("python -m http.server 8080 &")
-
 # insert your Telegram bot token here
 bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
 
