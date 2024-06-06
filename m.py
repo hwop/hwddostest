@@ -302,12 +302,11 @@ def handle_hwop(message):
         if not get_hwop_status():
             response = "The free command is off now. Check @HackerWorldMods for more updates."
         else:
-            if user_id not in admin_id:
-                if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
-                    response = "You are on cooldown ❌. Please wait 30 minutes before running the /hwop command again."
-                    bot.reply_to(message, response)
-                    return
-                bgmi_cooldown[user_id] = datetime.datetime.now()
+            if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
+                response = "You are on cooldown ❌. Please wait 30 minutes before running the /hwop command again."
+                bot.reply_to(message, response)
+                return
+            bgmi_cooldown[user_id] = datetime.datetime.now()
 
             command = message.text.split()
             if len(command) == 4:
@@ -325,17 +324,13 @@ def handle_hwop(message):
                     response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
             else:
                 response = "✅ Usage :- /hwop <target> <port> <time>"
-
-                    else:
-    response = "Command time is changed join @HackerWorldMods for updates."
-
-                else:
-                    response = "Error ⚠️ Report it to @GoTo_HellxD."
-            else:
-                response = "Error ⚠️ Report it to @GoTo_HellxD."
         else:
-            response = "The free command is off now. Join @HackerWorldMods for more updates."
+            response = "Command time is changed join @HackerWorldMods for updates."
+    else:
+        response = "The free command is off now. Join @HackerWorldMods for more updates."
+
     bot.reply_to(message, response)
+
     
 def start_attack_reply_hwop(message, target, port, time):
     user_info = message.from_user
