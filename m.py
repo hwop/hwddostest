@@ -19,7 +19,7 @@ ON_OFF_PASTEBIN_URL = "https://pastebin.com/raw/cj6bkyYY"
 TIME_RANGE_PASTEBIN_URL = "https://pastebin.com/raw/MGBFceCU"
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('7344463555:AAHogrpfHeY71lqB5qrcti52jNJiYQt__5Y')
+bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
 
 # Admin user IDs
 admin_id = ["5575457497"]
@@ -225,7 +225,7 @@ def start_attack_reply(message, target, port, time):
 # Dictionary to store the last time each user ran the /bgmi command
 bgmi_cooldown = {}
 
-COOLDOWN_TIME =1800
+COOLDOWN_TIME =2700
 
 # Handler for /bgmi command
 @bot.message_handler(commands=['bgmi'])
@@ -303,7 +303,7 @@ def handle_hwop(message):
             response = "The free command is off now. Check @HackerWorldMods for more updates."
         else:
             if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
-                response = "You are on cooldown ❌. Please wait 30 minutes before running the /hwop command again."
+                response = "You are on cooldown ❌. Please wait 45 minutes before running the /hwop command again."
                 bot.reply_to(message, response)
                 return
             bgmi_cooldown[user_id] = datetime.datetime.now()
@@ -362,7 +362,7 @@ def show_command_logs(message):
 def show_help(message):
     help_text ='''🤖 Available commands:
 💥 /bgmi : Method For Bgmi Servers. 
-💥 /hwop : Method For Free qBgmi Servers. 
+💥 /hwop : Free Method For Bgmi Servers. 
 💥 /rules : Please Check Before Use !!.
 💥 /mylogs : To Check Your Recents Attacks.
 💥 /plan : Checkout Our Botnet Rates.
