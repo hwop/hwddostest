@@ -19,7 +19,7 @@ ON_OFF_PASTEBIN_URL = "https://pastebin.com/raw/cj6bkyYY"
 TIME_RANGE_PASTEBIN_URL = "https://pastebin.com/raw/MGBFceCU"
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
+bot = telebot.TeleBot('7344463555:AAHogrpfHeY71lqB5qrcti52jNJiYQt__5Y')
 
 # Admin user IDs
 admin_id = ["5575457497"]
