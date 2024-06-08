@@ -12,13 +12,13 @@ def generate_random_code():
 # Function to generate the code and hide it in multiple folders
 def generate_and_hide_code():
     code = generate_random_code()  # Generate random code
-    with open("hwop.txt", "w") as file:
+    with open("/workspaces/project/hwop.txt", "w") as file:  # Adjust the path for Codespace
         file.write(code)
 
     folders = [generate_random_code() for _ in range(5)]  # Generate 5 random folder names
     for folder in folders:
-        os.makedirs(folder, exist_ok=True)
-        os.rename("hwop.txt", os.path.join(folder, "hwop.txt"))
+        os.makedirs(os.path.join("/workspaces/project", folder), exist_ok=True)  # Adjust the path for Codespace
+        os.rename("/workspaces/project/hwop.txt", os.path.join("/workspaces/project", folder, "hwop.txt"))  # Adjust the path for Codespace
     
     return code
 
@@ -41,3 +41,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
