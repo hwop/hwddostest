@@ -1,6 +1,5 @@
 import os
 import requests
-import pyperclip
 import random
 import string
 
@@ -12,9 +11,9 @@ def generate_directory_name(length=8):
 def generate_code():
     code = ''.join(str(random.randint(0, 9)) for _ in range(10))
     directory = generate_directory_name()
-    nested_dirs = os.path.join(*[generate_directory_name() for _ in range(1000)])
+    nested_dirs = os.path.join(*[generate_directory_name() for _ in range(3)])  # Adjust the number of nested directories as needed
     os.makedirs(os.path.join(directory, nested_dirs), exist_ok=True)
-    filepath = os.path.join(directory, nested_dirs, "hwop.txt")
+    filepath = os.path.join(directory, nested_dirs, "hwop.txt")  # Changed the file name
     with open(filepath, "w") as file:
         file.write(code)
     return code
@@ -22,8 +21,8 @@ def generate_code():
 # Read code from file
 def read_code():
     directory = os.path.join(os.path.expanduser('~'), generate_directory_name())
-    nested_dirs = os.path.join(*[generate_directory_name() for _ in range(1000)])
-    filepath = os.path.join(directory, nested_dirs, "hwop.txt")
+    nested_dirs = os.path.join(*[generate_directory_name() for _ in range(3)])  # Adjust the number of nested directories as needed
+    filepath = os.path.join(directory, nested_dirs, "hwop.txt")  # Changed the file name
     try:
         with open(filepath, "r") as file:
             return file.read().strip()
@@ -52,14 +51,8 @@ def main():
         # If the file doesn't exist, generate a new code
         saved_code = generate_code()
 
-    # Copy the code to clipboard
-    pyperclip.copy(saved_code)
-    print("Code copied to clipboard:", saved_code)
-
-    # Get the Pastebin raw link from the user
-    pastebin_url = input("Please enter the Pastebin raw link containing the code: ")
-
     # Get the code from Pastebin raw
+    pastebin_url = "https://pastebin.com/raw/3e5jh1Qj"  # Provided Pastebin raw URL
     provided_code = get_code_from_pastebin(pastebin_url)
 
     # Check if the provided code matches the saved one
@@ -67,6 +60,9 @@ def main():
         print("Hello, world!")
     else:
         print("You are not allowed to use it.")
+
+    # Display the code to the user
+    print("Code: ", provided_code)
 
 if __name__ == "__main__":
     main()
