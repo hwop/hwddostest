@@ -1,68 +1,44 @@
 import os
 import requests
+import hashlib
 import random
 import string
 
-# Generate a random directory name
-def generate_directory_name(length=8):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-
-# Generate a random 10-digit code
-def generate_code():
-    code = ''.join(str(random.randint(0, 9)) for _ in range(10))
-    directory = generate_directory_name()
-    nested_dirs = os.path.join(*[generate_directory_name() for _ in range(3)])  # Adjust the number of nested directories as needed
-    os.makedirs(os.path.join(directory, nested_dirs), exist_ok=True)
-    filepath = os.path.join(directory, nested_dirs, "hwop.txt")  # Changed the file name
-    with open(filepath, "w") as file:
-        file.write(code)
+# Function to generate a 10-character random code
+def generate_random_code():
+    code = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
     return code
 
-# Read code from file
-def read_code():
-    directory = os.path.join(os.path.expanduser('~'), generate_directory_name())
-    nested_dirs = os.path.join(*[generate_directory_name() for _ in range(3)])  # Adjust the number of nested directories as needed
-    filepath = os.path.join(directory, nested_dirs, "hwop.txt")  # Changed the file name
-    try:
-        with open(filepath, "r") as file:
-            return file.read().strip()
-    except FileNotFoundError:
-        return None
+# Function to generate the code and hide it in multiple folders
+def generate_and_hide_code():
+    code = generate_random_code()  # Generate random code
+    with open("hwop.txt", "w") as file:
+        file.write(code)
 
-# Get code from Pastebin raw
-def get_code_from_pastebin(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.text.strip()
-    except requests.exceptions.RequestException as e:
-        print("Error:", e)
-        return None
+    folders = [generate_random_code() for _ in range(5)]  # Generate 5 random folder names
+    for folder in folders:
+        os.makedirs(folder, exist_ok=True)
+        os.rename("hwop.txt", f"{folder}/hwop.txt")
+    
+    return code
 
-# Check if provided code matches the saved one
-def check_code(provided_code, saved_code):
-    return provided_code == saved_code
+# Function to verify the code with the provided Pastebin raw URL
+def verify_code(pastebin_raw_url, generated_code):
+    response = requests.get(pastebin_raw_url)
+    remote_code = response.text.strip()
 
-def main():
-    try:
-        # Try to read the saved code
-        saved_code = read_code()
-    except FileNotFoundError:
-        # If the file doesn't exist, generate a new code
-        saved_code = generate_code()
-
-    # Get the code from Pastebin raw
-    pastebin_url = "https://pastebin.com/raw/3e5jh1Qj"  # Provided Pastebin raw URL
-    provided_code = get_code_from_pastebin(pastebin_url)
-
-    # Check if the provided code matches the saved one
-    if provided_code and check_code(provided_code, saved_code):
+    if remote_code == generated_code:
         print("Hello, world!")
     else:
+        print("The generated code is:", generated_code)
         print("You are not allowed to use it.")
 
-    # Display the code to the user
-    print("Code: ", provided_code)
+# Main function
+def main():
+    generated_code = generate_and_hide_code()
+    pastebin_raw_url = "https://pastebin.com/raw/3e5jh1Qj"  # Replace with your Pastebin raw URL
+    verify_code(pastebin_raw_url, generated_code)
 
 if __name__ == "__main__":
     main()
+    
