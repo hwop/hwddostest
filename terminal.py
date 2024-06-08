@@ -1,21 +1,4 @@
-import os
 import requests
-
-# Function to fetch the current Codespace URL
-def get_codespace_url():
-    # Simulate fetching the URL, replace this with the actual method to obtain the Codespace URL
-    # For example, we assume it's stored in an environment variable CODESPACE_URL
-    codespace_url = os.getenv('CODESPACE_URL')
-    
-    if not codespace_url:
-        # For the sake of this example, we assume the URL is stored in a local file
-        try:
-            with open('/path/to/codespace_url.txt', 'r') as file:
-                codespace_url = file.read().strip()
-        except FileNotFoundError:
-            pass
-    
-    return codespace_url
 
 # Pastebin raw URL containing the allowed URLs
 pastebin_raw_url = 'https://pastebin.com/raw/UHkWyd4e'
@@ -38,11 +21,10 @@ def check_url_in_pastebin(codespace_url, pastebin_raw_url):
         print(f"Error fetching Pastebin content: {e}")
 
 if __name__ == "__main__":
-    # Fetch the Codespace URL
-    codespace_url = get_codespace_url()
+    # Prompt the user to input their Codespace URL
+    codespace_url = input("Enter your Codespace URL: ")
     
     if codespace_url:
         check_url_in_pastebin(codespace_url, pastebin_raw_url)
     else:
-        print("Codespace URL could not be obtained")
-      
+        print("Codespace URL is not provided")
