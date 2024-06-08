@@ -18,7 +18,7 @@ def generate_and_hide_code():
     folders = [generate_random_code() for _ in range(5)]  # Generate 5 random folder names
     for folder in folders:
         os.makedirs(folder, exist_ok=True)
-        os.rename("hwop.txt", f"{folder}/hwop.txt")
+        os.rename("hwop.txt", os.path.join(folder, "hwop.txt"))
     
     return code
 
@@ -41,4 +41,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
