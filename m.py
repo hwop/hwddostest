@@ -19,10 +19,10 @@ ON_OFF_PASTEBIN_URL = "https://pastebin.com/raw/cj6bkyYY"
 TIME_RANGE_PASTEBIN_URL = "https://pastebin.com/raw/MGBFceCU"
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('6862301136:AAHfF5AhtnxzI54mHxYKR2KhLwPFt94lGEU')
+bot = telebot.TeleBot('6499747687:AAEdD608JsE3ugY2kGUjf5UnL8PUqcifGHo')
 
 # Admin user IDs
-admin_id = ["5575457497"]
+admin_id = ["1112438263"]
 
 # File to store allowed user IDs
 USER_FILE = "users.txt"
