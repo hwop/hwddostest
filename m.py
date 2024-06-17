@@ -259,7 +259,7 @@ def handle_bgmi(message):
         else:
             response = "✅ Usage :- /bgmi <target> <port> <time>"  # Updated command syntax
     else:
-        response = "❌ You Are Not Authorized To Use This Command ❌ Dm @GoTo_HellxD"
+        response = "❌ You Are Not Authorized To Use This Command ❌ Dm @krishnaaxyz"
 
     bot.reply_to(message, response)
 
@@ -300,7 +300,7 @@ def handle_hwop(message):
     user_id = str(message.chat.id)
     if user_id in allowed_user_ids:
         if not fetch_on_off_value():
-            response = "The free command is off now. Check @HackerWorldMods for more updates."
+            response = "The free command is off now. Check @godlxpanda for more updates."
         else:
             if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
                 response = "You are on cooldown ❌. Please wait 30 minutes before running the /hwop command again."
@@ -325,7 +325,7 @@ def handle_hwop(message):
             else:
                 response = "✅ Usage :- /hwop <target> <port> <time>"
     else:
-        response = "Command time is changed join @HackerWorldMods for updates."
+        response = "Command time is changed join @godlxpanda for updates."
     bot.reply_to(message, response)
 
     
@@ -371,8 +371,8 @@ def show_help(message):
 🤖 To See Admin Commands:
 💥 /admincmd : Shows All Admin Commands.
 
-Buy From :- @GoTo_HellxD
-Official Channel :- @HackerWorldMods
+Buy From :- @krishnaaxyz
+Official Channel :- @godlxpanda
 '''
     for handler in bot.message_handlers:
         if hasattr(handler, 'commands'):
@@ -387,9 +387,9 @@ Official Channel :- @HackerWorldMods
 @bot.message_handler(commands=['start'])
 def welcome_start(message):
     user_name = message.from_user.first_name
-    response = f'''👋🏻Welcome to Your Home, {user_name}! Feel Free to Explore.
+    response = f'''👋🏻Welcome to Your Home, {❤️‍🔥 𝙂𝙤𝙙𝙇 𝙭 𝙋𝘼𝙉𝘿𝘼'𝙨 𝘽𝙤𝙩 🤖}! Feel Free to Explore.
 🤖Try To Run This Command : /help 
-✅Join :- t.me/HackerWorldMods'''
+✅Join :- https://t.me/godlxpanda'''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['rules'])
